@@ -1,17 +1,48 @@
 import discord
+import random
 
 
 class character():
     name = ""
-    charclass = ""
-    maxspirit = 1
+    maxSpirit = 1
     spirit = 1
     inventory = []
     location = ""
+    emblem = ""
+    charType = ""
 
 
-class player(character):
+class town():
+    buildings = []
+    townspeople = []
+    partyName = ""
+    partyMembers = []
+    partyEmblem = ""
+
+
+class players(character):
     equipment = []
+    materials = []
+    party = ""
+
+
+class enemies(character):
+    enemyDescription = ""
+    combatAbilities = []
+
+
+class menus():
+    textPrompt = []
+    reactions = []
+    parentMenu = None
+    childMenus = []
+
+
+class dungeonInfo():
+    difficulty = 1
+    numRooms = random.randint(4,8)
+    themes = []
+    materialsTable = []
 
 
 def prw(botprint):
@@ -24,21 +55,16 @@ client = discord.Client()
 
 
 @client.event
-async def newplayer():
-    newplayerinfo = player()
+#async def newplayer():
+#    newplayerinfo = players()
+#
+#    prw('''As you walk, the forest grows denser.  What little light shines through the canopy is muted by the dull grey bark on the gnarled trees.  The cold clings to your skin and gives you pause.  The stench of wet moss emanates from above.  You follow a blue glowing circuit embedded in the rocks at your feet.  At times you lose it in the bushes and have to wade through thorns to keep on your path.  Where this circuit leads, you do not know.
+#
+#You have followed the circuit for so long, you lost track of time.  Has it been hours or days?  As you consider giving up and turning back, you come upon a boulder with a figure sitting on it.  The figure appears to be a statue, but has subtle, organic movements.  Its shoulders appear relaxed, and its feet sway to and fro.  Its eye stalks track you, scanning you up and down.
+#
+#"You, too, follow the circuit? And what is your name?"''')
 
-    prw('''As you walk, the forest grows denser.  What little light shines through the canopy is muted by the dull grey 
-    bark on the gnarled trees.  The stench of wet moss emanates from above.  You follow a blue glowing circuit embedded 
-    in the rocks at your feet.  At times you lose it in the bushes and have to wade through thorns to keep on your path.
-    Where this circuit leads, you do not know.
-    
-    You follow the circuit for so long, you lose track of time.As you consider giving up and turning back, you come upon a boulder with a figure sitting on it.  The 
-    figure appears to be a statue, but has subtle, organic movements.  Its shoulders appear relaxed, and its feet sway
-    to and fro.  Its eye stalks track you, scanning you up and down.
-    
-    "You are a traveler?''')
-
-    newplayerinfo.name = raw_input('And what is your name?"')
+#    newplayerinfo.name = await
 
 
 async def on_message(message):
@@ -60,7 +86,10 @@ async def on_message(message):
         await client.send_message(message.channel, '{0.user} reacted with {0.reaction.emoji}!'.format(res))
 
     if message.content.startswith('*⃣'):
-        msg = 'Welcome '
+        emojis = ['📖', 'ℹ']
+        msg = await client.send_message(message.channel, 'You have accessed the menu.  Choose an option.')
+        for option in emojis:
+            await client.add_reaction(msg, option)
 
 
 async def on_ready():
